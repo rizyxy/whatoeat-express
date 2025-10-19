@@ -10,22 +10,41 @@ const prisma = new PrismaClient();
 
 app.get('/ingredients', async (req, res) => {
     try {
-        const ingredients = await prisma.ingredient.findMany({
-            orderBy: {
-                id: 'asc'
-            }
-            });
+        const cursor = req.query?.cursor;
 
-        res.json({
-            data: ingredients
+        let ingredients;
+
+        if (cursor == null) {
+            ingredients = await prisma.ingredient.findMany({
+                take: 3,
+                orderBy: {
+                    id: 'asc'
+                }
+            });
+        }
+        else {
+            ingredients = await prisma.ingredient.findMany({
+                take: 3,
+                skip: 1,
+                cursor: {
+                    id: Number(cursor)
+                },
+                orderBy: {
+                    id: 'asc',
+                }
+            });
+        }
+
+        return res.json({
+            data: ingredients,
+            cursor: ingredients[2]?.id
         });
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             error: error
         });
     }
 });
-
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
