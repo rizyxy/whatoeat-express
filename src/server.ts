@@ -16,7 +16,9 @@ app.get('/ingredients', async (req, res) => {
             }
             });
 
-        res.json(ingredients);
+        res.json({
+            data: ingredients
+        });
     } catch (error) {
         res.status(500).json({
             error: error
