@@ -15,6 +15,7 @@ model Dish {
   id              Int              @id @default(autoincrement())
   name            String
   description     String?
+  guide           String?
   dishIngredients DishIngredient[]
 }
 
