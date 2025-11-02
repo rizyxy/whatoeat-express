@@ -10,3 +10,25 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Dish {
+  id              Int              @id @default(autoincrement())
+  name            String
+  description     String?
+  dishIngredients DishIngredient[]
+}
+
+model Ingredient {
+  id              Int              @id @default(autoincrement())
+  name            String
+  dishIngredients DishIngredient[]
+}
+
+model DishIngredient {
+  Dish         Dish       @relation(fields: [dishId], references: [id])
+  dishId       Int
+  Ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId Int
+
+  @@id([dishId, ingredientId])
+}

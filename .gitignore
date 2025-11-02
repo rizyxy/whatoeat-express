@@ -1,3 +1,11 @@
+# Node Modules
 node_modules/
+
+# Prisma
 /generated/prisma
+
+# Database
+prisma/dev.db
+
+# Environment File
 .env
